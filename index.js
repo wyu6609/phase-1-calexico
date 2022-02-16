@@ -1,5 +1,6 @@
 //global variable storage
 let menuObjGlobal, totalCostGlobal;
+
 //api endpoint
 const uri = "http://localhost:3000/menu";
 // menu item container node
@@ -10,6 +11,9 @@ const dishNameDisplay = document.querySelector("#dish-name");
 const dishDescriptionDisplay = document.querySelector("#dish-description");
 const dishPriceDisplay = document.querySelector("#dish-price");
 const dishQuantityDisplay = document.querySelector("#number-in-cart");
+//total cost node display
+const totalCostDisplay = document.querySelector("#total-cost");
+
 //submit form nodes
 const cartForm = document.querySelector("#cart-form");
 const cartAmountInput = document.querySelector("#cart-amount");
@@ -43,12 +47,16 @@ function renderMenuItems(menuObj) {
 
 //render menu images and display details of individual Menu obj
 function renderDishDetails(menuObj) {
+  if (totalCostGlobal === undefined) {
+    totalCostGlobal = 0;
+  }
+  console.log(totalCostGlobal);
   dishImageDisplay.src = menuObj.image;
   dishNameDisplay.textContent = menuObj.name;
   dishDescriptionDisplay.textContent = menuObj.description;
   dishPriceDisplay.textContent = `$ ${menuObj.price}`;
   dishQuantityDisplay.textContent = menuObj.number_in_bag;
-
+  totalCostDisplay.textContent = `TOTAL: $${totalCostGlobal}`;
   //passes the displayed dish Obj to the global scope for future manipulation
   menuObjGlobal = menuObj;
 }
@@ -86,6 +94,9 @@ function patchRequest(menuObj) {
     });
 }
 function createTotalCost(menuObj) {
-  let totalCost = parseInt(menuObj.number_in_bag * menuObj.price);
-  document.querySelector("#total-cost").textContent = `TOTAL: $${totalCost}`;
+  totalCostGlobal = parseInt(menuObj.number_in_bag * menuObj.price);
+
+  document.querySelector(
+    "#total-cost"
+  ).textContent = `TOTAL: $${totalCostGlobal}`;
 }
